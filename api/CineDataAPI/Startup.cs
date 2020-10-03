@@ -32,7 +32,7 @@ namespace CineDataAPI
         {
             services.AddDbContext<DataContext>(opt=>opt.UseInMemoryDatabase("Database"));
             services.AddScoped<DataContext, DataContext>();
-            services.AddScoped<IMovieRepository, MovieRepository>();
+            services.AddScoped<IMovieRepository, MovieRepositoryStub>();
             services.AddSingleton<ILogger>(svc=>svc.GetRequiredService<ILogger<Movie>>());
             services.AddControllers();
         }

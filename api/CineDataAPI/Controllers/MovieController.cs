@@ -30,10 +30,39 @@ namespace CineDataAPI.Controlles{
             {
                 return Ok(_movieRepository.ListAll(false));   
             }
+            catch (ArgumentException ex)
+            {
+                _logger.Log(LogLevel.Error,ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError,ex.Message);
+            }
             catch (Exception ex)
             {
-                _logger.LogError("Ocurred Error:",ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                _logger.Log(LogLevel.Error, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError,ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("Add")]
+        public async Task<ActionResult<Movie>> Add(){
+            try
+            {
+                Movie movie = new Movie(){
+                    Id = 0,
+                    Title = "Nova Irmandade"
+                };
+                _movieRepository.Add(movie);
+                return Ok("Cadastrado com sucesso!");                
+            }
+            catch (ArgumentException ex)
+            {
+                _logger.Log(LogLevel.Error,ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(LogLevel.Error,ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
     }

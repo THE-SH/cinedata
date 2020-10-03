@@ -1,46 +1,42 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CineDataAPI.Data;
 using CineDataAPI.Domain.Entities;
 using CineDataAPI.Domain.Repository.Interfaces;
 
 namespace CineDataAPI.Domain.Repository
 {
-    public class MovieRepository : IMovieRepository
+    public class MovieRepository : BaseRepository<Movie>, IMovieRepository
     {
-        private List<Movie> moviesMock = new List<Movie>(){
-            new Movie(){
-                Id = 1,
-                Title = "Matrix Revolution"
-            }, 
-            new Movie(){
-                Id = 2,
-                Title = "Vingadores Ultimato"
-            }
-        };
-
-        public bool Add(Movie entity)
+        public MovieRepository(DataContext context) : base(context)
         {
-            moviesMock.Add(entity);
-            return true;
         }
 
-        public bool Delete(Movie entity)
+        public override void Add(Movie entity)
+        {   
+            if(_db.Movies.Any(x=>x.Id == entity.Id))
+                throw new ArgumentException("Este filme já está cadastrado!");
+            _db.Movies.Add(entity);
+            _db.SaveChanges();
+        } 
+
+        public override void Delete(Movie entity)
         {
             throw new NotImplementedException();
         }
 
-        public Movie GetById(int id)
+        public override Movie GetById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public List<Movie> ListAll(bool lazyLoading)
+        public override List<Movie> ListAll(bool lazyLoading)
         {
-            return moviesMock.ToList();
+            return _db.Movies.ToList();
         }
 
-        public bool Update(Movie entity)
+        public override void Update(Movie entity)
         {
             throw new NotImplementedException();
         }

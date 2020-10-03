@@ -1,5 +1,6 @@
 using CineDataAPI.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.InMemory;
 
 namespace CineDataAPI.Data 
 {
@@ -7,12 +8,21 @@ namespace CineDataAPI.Data
     {
         public DataContext(DbContextOptions<DataContext> options)
             :base(options)
-        {            
+        {
         }
 
-        public virtual DbSet<Genre> Genres { get; set; }
-        public virtual DbSet<Movie> Movies { get; set; }
-        public virtual DbSet<MovieGenre> MovieGenres { get; set; }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseInMemoryDatabase("Database");
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+        }
+
+        public DbSet<Genre> Genres { get; set; }
+        public DbSet<Movie> Movies { get; set; }
+        public DbSet<MovieGenre> MovieGenres { get; set; }
 
         
     }

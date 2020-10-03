@@ -2,11 +2,11 @@ using System.Collections.Generic;
 
 namespace CineDataAPI.Domain.Repository.Interfaces
 {
-    public interface IRepository<T> {
+    public interface IRepository<T> where T : class{
         List<T> ListAll(bool lazyLoading); 
         T GetById(int id);
-        bool Add(T entity);
-        bool Delete(T entity);
-        bool Update(T entity);
+        void Add(T entity);
+        void Delete(T entity);
+        void Update(T entity);
     }
 }
